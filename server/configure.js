@@ -1,10 +1,13 @@
 var connect = require('connect'),
 	path = require('path'),
-	// routes = require('./routes'),
+	routes = require('./routes'),
 	exphbs = require('express3-handlebars');
 
 module.exports = function(app){
 	//configuration code...
+
+             // use handlebars for HTML rendering. 
+             // filename used will be .handlebars
 
 	app.engine('handlebars', exphbs.create({
 		defaultLayout : 'main',
@@ -15,7 +18,9 @@ module.exports = function(app){
 
 	app.set('view engine', 'handlebars');
 
-	app.use(connect.logger('dev'));
+	// configure various middlewares part of connect. 
+
+	app.use(connect.logger('dev')); 
 	app.use(connect.bodyParser({
 		uploadDir:path.join(__dirname, '../public/upload/temp')
 
@@ -30,5 +35,6 @@ module.exports = function(app){
 	if('development' === app.get('env')) {
 		app.use(connect.errorHandler());
 	}
+	routes.initialize(app);
 	return app;
 };
